@@ -20,8 +20,7 @@ class StreamChatTests: XCTestCase {
         configuration.requestCachePolicy = .reloadIgnoringCacheData
         mock_urlsession = MockURLSession(configuration: configuration, delegate: nil, delegateQueue: nil)
         mock_networkmanager = MockChatNetworkManager(urlSession: mock_urlsession)
-        mock_streamtask = MockStreamTask()
-        mock_networkmanager.streamTask = mock_streamtask
+        mock_networkmanager.streamTask = MockStreamTask()
         sut_chatroom = ChatRoom(chatNetworkManager: mock_networkmanager)
         
     }
@@ -35,7 +34,7 @@ class StreamChatTests: XCTestCase {
         // given
         let expectation = XCTestExpectation()
         let message = "hi"
-        
+        mock_streamtask = mock_networkmanager.streamTask as? MockStreamTask
         
         // when
         mock_streamtask.resultHandler = {
@@ -46,7 +45,7 @@ class StreamChatTests: XCTestCase {
             XCTAssertEqual(self.mock_streamtask.dataList.count, 1)
             
             // verify that the written data is an expected data
-            XCTAssertEqual(expectedString, "hi")
+            XCTAssertEqual(expectedString, "MSG::hi::END")
             
             // verify that write method was called only once
             XCTAssertEqual(self.mock_streamtask.writeCounter, 1)
