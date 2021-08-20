@@ -121,7 +121,7 @@ class ChatRoomViewController: UIViewController {
         guard let userInfo = notification.userInfo else { return }
         guard let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval else { return }
         
-        bottomConstraint?.constant = -8
+        bottomConstraint?.constant = -30
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         }
@@ -171,7 +171,7 @@ class ChatRoomViewController: UIViewController {
             messageInputStackView.trailingAnchor.constraint(equalTo: messageInputView.trailingAnchor, constant: -5)
             
         ])
-        bottomConstraint = messageInputStackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
+        bottomConstraint = messageInputStackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
         bottomConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
