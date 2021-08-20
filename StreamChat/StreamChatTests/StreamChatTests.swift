@@ -52,6 +52,32 @@ class StreamChatTests: XCTestCase {
             expectation.fulfill()
         }
         sut_chatroom.send(message)
-        wait(for: [expectation], timeout: 6)
+        wait(for: [expectation], timeout: 1)
+    }
+    
+    func test_sut_chatroom_에서_join메서드_호출시_streamtask가_정상적으로_readData_writeData를_할수있는지_체크() {
+        
+        // given
+        let expectation = XCTestExpectation()
+        let username = "James"
+        mock_streamtask = mock_networkmanager.streamTask as? MockStreamTask
+        
+        // when
+        mock_streamtask.resultHandler = {
+            let expectedString =  self.mock_streamtask.successfulDataString
+            
+            // then
+            // verify that mock streamtask was able to write data and add it to expected array
+            XCTAssertEqual(self.mock_streamtask.dataList.count, 1)
+            
+            // verify that the written data is an expected data
+            XCTAssertEqual(expectedString, "MSG::hi::END")
+            
+            // verify that write method was called only once
+            XCTAssertEqual(self.mock_streamtask.writeCounter, 1)
+            expectation.fulfill()
+        }
+        sut_chatroom.joinChat(username: username)
+        wait(for: [expectation], timeout: 1)
     }
 }
